@@ -5,27 +5,31 @@ import SquareGrid from "@/components/square-grid";
 import HeaderSection from "@/components/header-section";
 import back from '../public/back.png';
 import forwward from '../public/forward.png';
-import { useState } from "react";
+import React, { useState } from "react";
 import tree from '../public/tree.jpg'
 import mountain from '../public/mountain.jpg'
 import lake from '../public/lake.jpg'
 
 export default function Home() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
 
-  const handleImageChange = (event) => {
-    const files = Array.from(event.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages([...images, ...newImages]);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+
+    if (fileList) {
+      const fileArray = Array.from(fileList)
+      const newImageUrls = fileArray.map(file => URL.createObjectURL(file));
+      setImages(prevImages => [...prevImages, ...newImageUrls]);
+    }
   };
   const triggerFileInput = () => {
-    document.getElementById('image').click();
+    const fileInput = document.getElementById('image') as HTMLInputElement;
+    fileInput.click();
   };
-
   return (
     <div className="flex w-full h-screen bg-gradient-to-b from-[#373E44] to-[#191B1F] gap-x-6 py-14 pr-16 pl-8">
       <div className="bg-[#616161D1] rounded-2xl border-[#96BEE7] border-[2px] w-full h-full "></div>
-      <div className="flex flex-col w-full h-full gap-y-6 ">
+      <div className="flex flex-col w-full h-full gap-y-5 ">
         <div
           style={{ boxShadow: "1px 6px 15px 1px #000000" }}
           className="bg-[#363C43] rounded-2xl shadow-xl flex gap-x-4 flex-col w-full mx-4 p-4"
